@@ -1,4 +1,5 @@
 from modelos.avaliacao import Avaliacao
+from modelos.cardapio.item_cardapio import ItemCardapio 
 class Restaurante: #classe
     restaurantes = []
     
@@ -7,6 +8,7 @@ class Restaurante: #classe
         self.categoria = categoria.upper() #atributos da classe
         self._ativo = False #atributos da classe PRIVADO(Protegido) deve usar property para modificar
         self._avaliacao = []
+        self._cardapio = []
         Restaurante.restaurantes.append(self)
         
     def __str__(self):
@@ -39,3 +41,30 @@ class Restaurante: #classe
         quantidade_notas = len(self._avaliacao)
         media = round(soma_das_notas / quantidade_notas, 1)
         return media
+    
+    # def adcionar_bebida_cardapio(self, bebida):
+    #     self._cardapio.append(bebida)
+        
+    # def adcionar_prato_cardapio(self, prato):
+    #     self._cardapio.append(prato)
+     
+    def adcionar_no_cardapio(self, item):           
+        if isinstance(item, ItemCardapio):
+            self._cardapio.append(item)
+            
+    @property
+    def exibir_cardapio(self):
+        print(f'Cardápio do restaurante {self._nome}\n')
+        for i,item in enumerate(self._cardapio,start=1):
+            if hasattr(item,'descricao'):
+                mensagem_prato  = f'{i}. Nome:{item._nome} | Preço: R${item._preco:.2f} | Descrição: {item.descricao}'
+                print(mensagem_prato)
+            elif hasattr(item,'sabor'):
+                mensagem_sobremesa  = f'{i}. Nome:{item._nome} | Preço: R${item._preco:.2f} | Sabor: {item.sabor}'
+                print(mensagem_sobremesa)
+            else:
+                mensagem_bebida  = f'{i}. Nome:{item._nome} | Preço: R${item._preco:.2f} | Tamanho: {item.tamanho}'
+                print(mensagem_bebida)
+        
+        print()
+        
